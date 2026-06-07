@@ -29,10 +29,40 @@ async function run() {
 
     const database = client.db("WorkLix");
     const jobsCollection = database.collection("jobs");
+    const companyCollection = database.collection("companies");
+
+    app.get("/api/jobs", async (req, res) => {
+      const query = {};
+      if (req.query.companyId) {
+        query.companyId = req.query.companyId;
+      }
+      if (req.query.status) {
+        query.status = req.query.status;
+      }
+      const cursor = jobsCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     app.post("/api/jobs", async (req, res) => {
       const job = req.body;
       const result = await jobsCollection.insertOne(job);
+      res.send(result);
+    });
+
+    // company apis
+    app.post("/api/companies", async (req, res) => {
+      const company = req.body;
+      const result = await companyCollection.insertOne(company);
+      res.send(result);
+    });
+
+    app.get("/api/my/companies", async (req, res) => {
+      const query = {};
+      if (req.query.agencyId) {
+        query.agencyId = req.query.agencyId;
+      }
+      const result = await companyCollection.findOne(query);
       res.send(result);
     });
 
