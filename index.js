@@ -62,7 +62,8 @@ async function run() {
       if (req.query.agencyId) {
         query.agencyId = req.query.agencyId;
       }
-      const result = await companyCollection.findOne(query);
+      const cursor = companyCollection.find(query);
+      const result = await cursor.toArray();
       res.send(result);
     });
 
