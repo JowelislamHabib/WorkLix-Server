@@ -84,8 +84,9 @@ async function run() {
       if (req.query.recruiterId) {
         query.recruiterId = req.query.recruiterId;
       }
-      const result = await companyCollection.findOne(query);
-      res.send(result || {});
+      const cursor = companyCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
