@@ -33,7 +33,11 @@ async function run() {
     const usersCollection = database.collection("user");
 
     app.get("/api/users", async (req, res) => {
-      const cursor = usersCollection.find().skip(6);
+      const query = {};
+      if (req.query.role) {
+        query.role = req.query.role;
+      }
+      const cursor = usersCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
@@ -67,7 +71,11 @@ async function run() {
 
     // company apis
     app.get("/api/companies", async (req, res) => {
-      const cursor = companyCollection.find().skip(4);
+      const query = {};
+      if (req.query.id) {
+        query._id = new ObjectId(req.query.id);
+      }
+      const cursor = companyCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
