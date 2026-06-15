@@ -124,7 +124,7 @@ async function run() {
     app.get("/api/plans", async (req, res) => {
       const query = {};
       if (req.query.plan_id) {
-        query.id = req.query.plan_id;
+        query.plan_id = req.query.plan_id;
       }
       const plan = await planCollection.findOne(query);
       res.send(plan);
