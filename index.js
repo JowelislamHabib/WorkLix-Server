@@ -33,6 +33,7 @@ async function run() {
     const usersCollection = database.collection("user");
     const applicationCollection = database.collection("applications");
     const planCollection = database.collection("plans");
+    const subscriptionCollection = database.collection("subscriptions");
 
     app.get("/api/users", async (req, res) => {
       const query = {};
@@ -128,6 +129,16 @@ async function run() {
       }
       const plan = await planCollection.findOne(query);
       res.send(plan);
+    });
+    // Subscription
+    app.post("/api/subscriptions", async (req, res) => {
+      const data = req.body;
+      const subsInfo = {
+        ...data,
+        createdAt: new Date(),
+      };
+
+      const result = await subscriptionCollection.insertOne(subsInfo);
     });
 
     // Send a ping to confirm a successful connection
