@@ -139,6 +139,20 @@ async function run() {
       };
 
       const result = await subscriptionCollection.insertOne(subsInfo);
+
+      // update the user plan information
+      const filter = { email: data.email };
+      // update the value of the 'quantity' field to 5
+      const updateDocument = {
+        $set: {
+          plan: data.planId,
+        },
+      };
+      const updateResult = await usersCollection.updateOne(
+        filter,
+        updateDocument,
+      );
+      res.send(updateResult);
     });
 
     // Send a ping to confirm a successful connection
